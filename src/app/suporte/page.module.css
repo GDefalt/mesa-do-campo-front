@@ -1,0 +1,188 @@
+.body{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.25rem 3.5rem;
+}
+
+/* topo */
+
+.topo{
+  text-align: center;
+  margin-top: 40px;
+}
+
+.topo h1{
+  font-size: 2.2rem;
+  font-family: var(--font-display);
+  color: var(--color-text);
+}
+
+.subtitulo{
+  color: var(--color-text-muted);
+  margin-top: 0.5rem;
+}
+
+.linha{
+  width: 80px;
+  height: 4px;
+  background: var(--color-primary);
+  margin: 12px auto 0;
+  border-radius: 4px;
+}
+
+.container{
+  margin-top: 2.5rem;
+}
+
+/* canais de contato */
+
+.canais{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.canal{
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.canalIcon{
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 12px;
+  background: var(--color-cream);
+  color: var(--color-primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.canalIcon svg{
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.canal h3{
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--color-text);
+  margin-bottom: 0.2rem;
+}
+
+.canalValor{
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  font-size: 0.92rem;
+}
+
+.canalDescricao{
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 0.15rem;
+}
+
+/* grid principal */
+
+.grid{
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.secaoTitulo{
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--color-text);
+  margin-bottom: 1.1rem;
+}
+
+/* formulário */
+
+.formulario{
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.campo{
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.campo input[type="text"],
+.campo select,
+.campo textarea{
+  font-weight: 400;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-cream);
+  font-size: 0.92rem;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo input[type="text"]:focus,
+.campo select:focus,
+.campo textarea:focus{
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(47, 125, 50, 0.15);
+}
+
+.arquivo{
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.enviar{
+  align-self: flex-start;
+  padding: 0.85rem 1.75rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.enviar:hover{
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.protocoloAviso{
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+/* responsividade */
+
+@media (max-width: 900px){
+  .canais{
+    grid-template-columns: 1fr;
+  }
+  .grid{
+    grid-template-columns: 1fr;
+  }
+}

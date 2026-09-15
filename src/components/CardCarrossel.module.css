@@ -1,0 +1,33 @@
+.carrossel_cards :global(.swiper-slide){
+  display: flex;
+  justify-content: center;
+  height: auto;
+}
+
+.carrossel_cards{
+    --swiper-navigation-color: var(--color-primary-dark);
+    padding: 0.5rem 0.5rem 2.5rem;
+    cursor: pointer;
+}
+
+.carrossel_cards :global(.swiper-button-prev),
+.carrossel_cards :global(.swiper-button-next){
+    background: white;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    box-shadow: var(--shadow-sm);
+}
+
+.carrossel_cards :global(.swiper-button-prev)::after,
+.carrossel_cards :global(.swiper-button-next)::after{
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.mensagem{
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+}

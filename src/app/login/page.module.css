@@ -1,0 +1,159 @@
+  .body_register {
+    min-height: 100vh;
+    background-image:
+      linear-gradient(160deg, rgba(30, 90, 33, 0.82) 0%, rgba(47, 125, 50, 0.55) 55%, rgba(248, 244, 233, 0.65) 100%),
+      url("/background.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+  }
+
+  .logo_container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .logo {
+    width: 64px;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25));
+  }
+
+  .logo_container h1 {
+    font-size: 34px;
+    font-family: var(--font-display);
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  /* MAIN */
+  .main_register {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  /* LOGIN CARD */
+  .login_card {
+    width: 100%;
+    max-width: 420px;
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .login_card h2 {
+    color: var(--color-primary-dark);
+    margin-bottom: 25px;
+    font-size: 1.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  .login_card input {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    font-size: 16px;
+    background: var(--color-cream);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .login_card input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(47, 125, 50, 0.15);
+  }
+
+  .login_card button {
+    width: 60%;
+    padding: 14px;
+    border: none;
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.15s;
+  }
+
+  .login_card button:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+  }
+
+  .erro {
+    color: #C43D3D;
+    background: #FBEAEA;
+    border: 1px solid #F3C6C6;
+    border-radius: 10px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.85rem;
+    margin: -8px 0 18px;
+    text-align: left;
+  }
+
+  .register {
+    margin-top: 20px;
+    color: var(--color-text-muted);
+  }
+
+  .register a {
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  /* RESPONSIVIDADE */
+  @media (max-width:768px) {
+    .logo {
+      width: 52px;
+    }
+
+    .logo_container h1 {
+      font-size: 28px;
+    }
+
+    .login_card {
+      padding: 30px;
+    }
+  }
+
+  @media (max-width:480px) {
+    .header {
+      padding: 20px;
+    }
+
+    .logo_container {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .logo_container h1 {
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .login_card {
+      padding: 25px;
+    }
+
+    .login_card button {
+      width: 100%;
+    }
+  }

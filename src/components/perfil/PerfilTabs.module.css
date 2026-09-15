@@ -1,0 +1,355 @@
+.formulario{
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.introducao{
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0.25rem;
+}
+
+.subtitulo{
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--color-text);
+  margin-top: 0.5rem;
+}
+
+.campo{
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.campo input,
+.campo select{
+  font-weight: 400;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-cream);
+  font-size: 0.92rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo input:focus,
+.campo select:focus{
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(47, 125, 50, 0.15);
+}
+
+.linhaDupla{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.opcoesRadio{
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.radioOpcao{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.btnPrimario{
+  align-self: flex-start;
+  display: inline-block;
+  text-align: center;
+  padding: 0.85rem 1.75rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btnPrimario:hover{
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.mensagem{
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
+.erro{
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #C43D3D;
+}
+
+.linkInline{
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.dica{
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-top: -0.5rem;
+}
+
+.campo input:disabled{
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+/* aviso (já é vendedor) */
+
+.aviso{
+  text-align: center;
+  padding: 1.5rem 0.5rem;
+}
+
+.avisoIcon{
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--color-cream);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.avisoIcon svg{
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.aviso h3{
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.aviso p{
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  max-width: 46ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* cartões salvos */
+
+.listaCartoes{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.cartaoItem{
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-cream);
+}
+
+.cartaoIcone{
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cartaoIcone svg{
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.cartaoInfo{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartaoApelido{
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.cartaoNumero{
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.btnRemover{
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #C43D3D;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+
+.btnRemover:hover{
+  background: #FBEAEA;
+}
+
+.btnEditar{
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+
+.btnEditar:hover{
+  background: var(--color-cream);
+}
+
+.acoesLinha{
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+/* Endereços */
+
+.cabecalhoEnderecos{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.tituloSecao{
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--color-text);
+  margin-bottom: 0.3rem;
+}
+
+.listaEnderecos{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.enderecoItem{
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-cream);
+}
+
+.enderecoIcone{
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.enderecoIcone svg{
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.enderecoInfo{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.enderecoLinha1{
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.enderecoLinha2{
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.selecaoEnderecos{
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.enderecoOpcao{
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-cream);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.enderecoOpcao:hover{
+  border-color: var(--color-primary-light);
+}
+
+.enderecoOpcaoAtiva{
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+
+.enderecoOpcao input{
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+@media (max-width: 560px){
+  .linhaDupla{
+    grid-template-columns: 1fr;
+  }
+  .enderecoItem{
+    flex-wrap: wrap;
+  }
+  .acoesLinha{
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

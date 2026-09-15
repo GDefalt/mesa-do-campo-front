@@ -1,0 +1,105 @@
+/* RESET GLOBAL */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Marca — verde de fazenda como cor principal */
+  --color-primary: #2F7D32;
+  --color-primary-dark: #1E5A21;
+  --color-primary-light: #6FBF73;
+  --color-carrossel: #256428;
+
+  /* Tons de apoio, inspirados em feira e colheita */
+  --color-accent: #E2A33D;
+  --color-cream: #F8F4E9;
+  --color-secondary: #F3F3F3;
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-border: #E4DEC9;
+
+  --color-text: #202B1E;
+  --color-text-muted: #6B7369;
+  --color-white: #FFFFFF;
+
+  /* Tipografia */
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Work Sans", "Segoe UI", sans-serif;
+
+  /* Sombras e cantos, reutilizados nas telas */
+  --shadow-sm: 0 2px 8px rgba(32, 43, 30, 0.08);
+  --shadow-md: 0 10px 30px rgba(32, 43, 30, 0.12);
+  --shadow-lg: 0 20px 45px rgba(32, 43, 30, 0.16);
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body{
+  background-color: var(--color-cream);
+}
+
+main{
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--font-body);
+  color: var(--color-text);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+input:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--color-primary-light);
+  color: var(--color-text);
+}

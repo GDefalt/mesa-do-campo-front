@@ -1,0 +1,64 @@
+.page{
+  width: 100%;
+}
+
+.main{
+  padding: 0 0 2rem;
+}
+
+.destaque{
+    text-align: left;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: white;
+    font-style: normal;
+    font-family: var(--font-display);
+}
+
+.main_carrossel{
+    margin: 0 auto 2.5rem;
+    max-width: 1600px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.destaque_background{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.itens_cards{
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.itens_carrossel{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:global(#produtos){
+  scroll-margin-top: 6rem;
+}
+
+@media (max-width: 700px){
+  .main{
+    padding: 0 0 1.5rem;
+  }
+  .main_carrossel{
+    padding: 1.25rem;
+  }
+  .destaque{
+    font-size: 1.6rem;
+  }
+}
