@@ -5,6 +5,13 @@ import type { NextConfig } from "next";
 const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:8080";
 
 const nextConfig: NextConfig = {
+  // Domínios do Cloudflare e/ou Ngrok
+  allowedDevOrigins: [
+    "26.210.152.59",
+    "*.trycloudflare.com",
+    "winston-imports-merchant-fellow.trycloudflare.com",
+  ],
+  
   async rewrites() {
     return [
       {
