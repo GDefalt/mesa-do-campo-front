@@ -1,0 +1,173 @@
+.body{
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.topo{
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.topo h1{
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.subtitulo{
+  color: var(--color-text-muted);
+  max-width: 52ch;
+  margin: 0 auto 1.75rem;
+}
+
+/* barra de busca */
+
+.form{
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.5rem 0.5rem 0.5rem 1.1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.icon{
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.form input{
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  min-width: 0;
+}
+
+.form input:focus{
+  outline: none;
+}
+
+.form button{
+  flex-shrink: 0;
+  padding: 0.65rem 1.25rem;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.form button:hover{
+  background: var(--color-primary-dark);
+}
+
+/* categorias */
+
+.categorias{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.chip{
+  padding: 0.55rem 1.05rem;
+  border-radius: 999px;
+  background: var(--color-cream);
+  border: 1px solid var(--color-border);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.chip:hover{
+  border-color: var(--color-primary-light);
+}
+
+.chipAtivo{
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.contagem{
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+}
+
+.limpar{
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  text-decoration: underline;
+  margin-left: 0.4rem;
+}
+
+/* grid de produtos */
+
+.grid{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+@media (max-width: 1200px){
+  .grid{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 720px){
+  .grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px){
+  .grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* vazio */
+
+.vazio{
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  color: var(--color-text-muted);
+}
+
+.vazioIcon{
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 1rem;
+  opacity: 0.6;
+}
+
+.vazio span{
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 480px){
+  .form{
+    max-width: none;
+  }
+  .form button{
+    padding: 0.65rem 0.9rem;
+  }
+}

@@ -1,0 +1,190 @@
+.cabecalho{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cabecalho h2{
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-text);
+}
+
+.btnAdicionar{
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.btnAdicionar:hover{
+  background: var(--color-primary-dark);
+}
+
+.form{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  background: var(--color-cream);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.campo{
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.campoLargo{
+  grid-column: 1 / -1;
+}
+
+.campo input,
+.campo select,
+.campo textarea{
+  font-weight: 400;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  resize: vertical;
+}
+
+.erro{
+  grid-column: 1 / -1;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #C43D3D;
+}
+
+.btnSalvar{
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 0.7rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-primary-dark);
+  color: white;
+  font-weight: 600;
+}
+
+.btnSalvar:disabled{
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* tabela */
+
+.tabela{
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.linhaCabecalho,
+.linha{
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.9rem 1.1rem;
+}
+
+.linhaCabecalho{
+  background: var(--color-cream);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.linha{
+  border-top: 1px solid var(--color-border);
+  font-size: 0.88rem;
+}
+
+.produtoNome{
+  display: block;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.produtoCategoria{
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.statusPausado{
+  color: #C43D3D;
+  font-weight: 600;
+}
+
+.acoesLinha{
+  display: flex;
+  gap: 0.5rem;
+  justify-self: end;
+}
+
+.btnEditar{
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+}
+
+.btnEditar:hover{
+  background: var(--color-cream);
+}
+
+.btnRemover{
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #C43D3D;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+}
+
+.btnRemover:hover{
+  background: #FBEAEA;
+}
+
+.vazio{
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 720px){
+  .form{
+    grid-template-columns: 1fr;
+  }
+  .linhaCabecalho{
+    display: none;
+  }
+  .linha{
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+  .acoesLinha{
+    justify-self: start;
+  }
+}

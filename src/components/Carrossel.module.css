@@ -1,0 +1,62 @@
+
+.carrossel{
+  --swiper-navigation-color: white;
+  padding-bottom: 0.5rem;
+}
+.carrossel :global(.swiper-slide){
+  display: flex;
+  justify-content: center;
+  height: 400px;
+  align-items: center;
+}
+
+.cards{
+  width: 90%;
+  height: 100%;
+  background-color: var(--color-carrossel);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  padding-bottom: 1.25rem;
+  gap: 0.35rem;
+}
+
+.cards:hover{
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cards > h1{
+  align-self: flex-start;
+  margin: 0.9rem 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.cards > img{
+  width: 85%;
+  height: 55%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.cards > p{
+  color: white;
+  font-family: var(--font-display);
+}
+
+.cards > p:last-child{
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--color-accent);
+}

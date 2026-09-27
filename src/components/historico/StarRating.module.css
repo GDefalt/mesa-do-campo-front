@@ -1,0 +1,24 @@
+.stars{
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.star{
+  width: 1.9rem;
+  height: 1.9rem;
+  color: var(--color-border);
+  transition: color 0.15s, transform 0.1s;
+}
+
+.star:hover{
+  transform: scale(1.08);
+}
+
+.star svg{
+  width: 100%;
+  height: 100%;
+}
+
+.starPreenchida{
+  color: var(--color-accent);
+}

@@ -1,0 +1,109 @@
+.body{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.25rem 3.5rem;
+}
+
+.topo{
+  text-align: center;
+  margin-top: 40px;
+}
+
+.topo h1{
+  font-size: 2.2rem;
+  font-family: var(--font-display);
+  color: var(--color-text);
+}
+
+.subtitulo{
+  color: var(--color-text-muted);
+  margin-top: 0.5rem;
+}
+
+.linha{
+  width: 80px;
+  height: 4px;
+  background: var(--color-primary);
+  margin: 12px auto 0;
+  border-radius: 4px;
+}
+
+.container{
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.secao{
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* bloqueio */
+
+.bloqueio{
+  min-height: calc(100vh - 13vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+}
+
+.bloqueioCard{
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 3rem 2.5rem;
+  text-align: center;
+  max-width: 460px;
+}
+
+.bloqueioIcon{
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1.25rem;
+}
+
+.redirecionando{
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.bloqueioCard h1{
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+  color: var(--color-text);
+  margin-bottom: 0.75rem;
+}
+
+.bloqueioCard p{
+  color: var(--color-text-muted);
+  margin-bottom: 1.75rem;
+  line-height: 1.6;
+}
+
+.btnPrimario{
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btnPrimario:hover{
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px){
+  .secao{
+    padding: 1.25rem;
+  }
+}
