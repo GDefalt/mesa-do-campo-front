@@ -6,6 +6,7 @@ import Paginacao from "../ui/Paginacao";
 import { formatarPreco } from "../../lib/formatarPreco";
 import {
   listarProdutosPorVendedorPaginado,
+  buscarMeusProdutosPorNome,
   criarProduto,
   atualizarProduto,
   deletarProduto,
@@ -16,7 +17,7 @@ import {
   ApiError,
 } from "@integracao-backend";
 
-const TAMANHO_LOTE = 6;
+const TAMANHO_LOTE = 10;
 
 interface Props {
   idVendedor: number;
@@ -45,6 +46,7 @@ export default function MeusProdutos({ idVendedor }: Props) {
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
+  const [termoBusca, setTermoBusca] = useState("");
 
   const [formAberto, setFormAberto] = useState(false);
   const [editandoId, setEditandoId] = useState<number | null>(null);
@@ -52,9 +54,23 @@ export default function MeusProdutos({ idVendedor }: Props) {
   const [salvando, setSalvando] = useState(false);
   const [erroForm, setErroForm] = useState("");
 
+  const buscandoPorNome = termoBusca.trim().length > 0;
+
   function carregar() {
     setCarregando(true);
-    listarProdutosPorVendedorPaginado(idVendedor, { lote, limite: TAMANHO_LOTE })
+    setErro("");
+
+    const busca = buscandoPorNome
+      ? buscarMeusProdutosPorNome(termoBusca.trim()).then((itens) => ({
+          itens,
+          totalItens: itens.length,
+          totalPaginas: 1,
+          paginaAtual: 1,
+          tamanhoPagina: itens.length,
+        }))
+      : listarProdutosPorVendedorPaginado(idVendedor, { lote, limite: TAMANHO_LOTE });
+
+    busca
       .then((resultado) => {
         setProdutos(resultado.itens);
         setTotalItens(resultado.totalItens);
@@ -75,7 +91,7 @@ export default function MeusProdutos({ idVendedor }: Props) {
   useEffect(() => {
     carregar();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idVendedor, lote]);
+  }, [idVendedor, lote, termoBusca]);
 
   function abrirNovo() {
     setForm(formVazio);
@@ -152,11 +168,37 @@ export default function MeusProdutos({ idVendedor }: Props) {
   return (
     <div>
       <div className={styles.cabecalho}>
-        <h2>Meus produtos</h2>
+        <div>
+          <h2>Meus produtos</h2>
+          <p>Controle seu catálogo, estoque e preços em um só lugar.</p>
+        </div>
         <button className={styles.btnAdicionar} onClick={formAberto ? fecharForm : abrirNovo}>
           {formAberto ? "Cancelar" : "+ Novo produto"}
         </button>
       </div>
+
+      <form
+        className={styles.busca}
+        onSubmit={(evento) => {
+          evento.preventDefault();
+        }}
+      >
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={styles.buscaIcon}>
+          <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.7" />
+          <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+        </svg>
+        <input
+          value={termoBusca}
+          onChange={(evento) => setTermoBusca(evento.target.value)}
+          placeholder="Pesquisar nos meus produtos"
+          aria-label="Pesquisar nos meus produtos"
+        />
+        {buscandoPorNome && (
+          <button type="button" className={styles.limparBusca} onClick={() => setTermoBusca("")}>
+            Limpar
+          </button>
+        )}
+      </form>
 
       {formAberto && (
         <form className={styles.form} onSubmit={salvar}>
@@ -254,11 +296,15 @@ export default function MeusProdutos({ idVendedor }: Props) {
             </div>
           ))}
 
-          {produtos.length === 0 && <p className={styles.vazio}>Você ainda não cadastrou produtos.</p>}
+          {produtos.length === 0 && (
+            <p className={styles.vazio}>
+              {buscandoPorNome ? "Nenhum produto encontrado para esta busca." : "Você ainda não cadastrou produtos."}
+            </p>
+          )}
         </div>
       )}
 
-      {!carregando && !erro && (
+      {!buscandoPorNome && !carregando && !erro && (
         <Paginacao
           paginaAtual={lote}
           totalPaginas={totalPaginas}

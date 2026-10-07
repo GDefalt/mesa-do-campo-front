@@ -13,6 +13,12 @@
   color: var(--color-text);
 }
 
+.cabecalho p{
+  margin-top: 0.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
 .btnAdicionar{
   padding: 0.6rem 1.1rem;
   border-radius: 999px;
@@ -27,6 +33,51 @@
 
 .btnAdicionar:hover{
   background: var(--color-primary-dark);
+}
+
+.busca{
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-cream);
+}
+
+.busca:focus-within{
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(47, 125, 50, 0.12);
+}
+
+.buscaIcon{
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.busca input{
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.limparBusca{
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  color: var(--color-primary-dark);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.limparBusca:hover{
+  background: rgba(47, 125, 50, 0.1);
 }
 
 .form{

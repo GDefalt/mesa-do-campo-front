@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
+        // Alguns navegadores ainda consultam /favicon.ico mesmo com a tag de ícone.
+        source: "/favicon.ico",
+        destination: "/icon.png",
+      },
+      {
         // Tudo que o front chamar em /api/* é repassado para o back-end.
         // Isso evita problemas de CORS, já que o back-end (branch dev) não
         // possui nenhuma configuração de CORS liberando o front separadamente.

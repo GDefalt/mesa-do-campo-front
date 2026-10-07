@@ -15,3 +15,4 @@ export * from "./avaliacao";
 export * from "./cartaoCredito";
 export * from "./cartaoDebito";
 export * from "./chavePix";
+export * from "./negocio";

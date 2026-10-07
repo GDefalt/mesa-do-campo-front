@@ -24,6 +24,11 @@ export function listarTodosProdutos(): Promise<Produto[]> {
   return apiGetList<Produto>("/produto/all", false);
 }
 
+/** GET /api/produto/name/{nome} */
+export function listarProdutosNome(nome: string): Promise<Produto[]> {
+  return apiGetList<Produto>(`/produto/name/${encodeURIComponent(nome)}`, false);
+}
+
 /** Igual a listarTodosProdutos, mas em lotes — usado no Catálogo. */
 export function listarTodosProdutosPaginado(opts?: {
   lote?: number;

@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import styles from "./CatalogoContent.module.css";
 import Cards from "../Cards";
 import Paginacao from "../ui/Paginacao";
-import { useTodosProdutos } from "../../hooks/useTodosProdutos";
 import { imagemDoProduto } from "../../lib/produtoImagem";
 import { formatarPreco } from "../../lib/formatarPreco";
 import {
@@ -17,6 +16,7 @@ import {
   CATEGORIA_PRODUTO_LABEL,
   ApiError,
 } from "@integracao-backend";
+import { useProdutosNome } from "@/hooks/useProdutosNome";
 
 const TAMANHO_LOTE = 15;
 
@@ -31,21 +31,21 @@ export default function CatalogoContent() {
   const router = useRouter();
   const termoInicial = searchParams.get("q") ?? "";
   const modoBusca = termoInicial.trim().length > 0;
+  const termoNormalizado = termoInicial.trim().toLowerCase();
 
   const [termo, setTermo] = useState(termoInicial);
   const [categoria, setCategoria] = useState<CategoriaProduto | "TODAS">("TODAS");
 
-  // Modo busca: como o back-end não tem busca por nome, carregamos tudo e
-  // filtramos no front (sem paginação, já que precisamos varrer tudo mesmo).
-  const { produtos: todosProdutos, carregando: carregandoBusca, erro: erroBusca } = useTodosProdutos();
+  // Modo busca: realiza a consulta diretamente no endpoint via hook.
+  const {
+    produtos: produtosBusca,
+    carregando: carregandoBusca,
+    erro: erroBusca,
+  } = useProdutosNome(termoNormalizado);
 
-  const resultadosBusca = useMemo(() => {
-    const termoNormalizado = termoInicial.trim().toLowerCase();
-    return todosProdutos.filter((produto) => produto.nome.toLowerCase().includes(termoNormalizado));
-  }, [todosProdutos, termoInicial]);
+  const resultadosBusca = produtosBusca;
 
-  // Modo navegação (sem busca): pedimos ao back-end em lotes, por categoria
-  // quando um filtro estiver selecionado.
+  // Modo navegação: busca em lotes/paginado por categoria do backend
   const [lote, setLote] = useState(1);
   const [produtosPagina, setProdutosPagina] = useState<Produto[]>([]);
   const [totalItens, setTotalItens] = useState(0);
@@ -109,6 +109,7 @@ export default function CatalogoContent() {
     router.push("/catalogo");
   }
 
+  // Alterna entre os resultados da busca ou os resultados da listagem padrão
   const resultados = modoBusca ? resultadosBusca : produtosPagina;
   const carregando = modoBusca ? carregandoBusca : carregandoPagina;
   const erro = modoBusca ? erroBusca : erroPagina;
@@ -153,7 +154,7 @@ export default function CatalogoContent() {
           <p className={styles.contagem}>
             {modoBusca ? (
               <>
-                {resultados.length} resultado(s) para "{termoInicial}"{" "}
+                {resultados.length} resultado(s) para “{termoInicial}”{" "}
                 <button className={styles.limpar} onClick={limparBusca}>
                   Limpar busca
                 </button>
@@ -202,7 +203,7 @@ export default function CatalogoContent() {
         <div className={styles.vazio}>
           <img src="/carrinho.svg" alt="" className={styles.vazioIcon} />
           <p>Não encontramos produtos para essa busca.</p>
-          <span>Tente termos como "frutas", "cebola" ou "laticínios".</span>
+          <span>Tente termos como “frutas”, “cebola” ou “laticínios”.</span>
         </div>
       )}
     </div>

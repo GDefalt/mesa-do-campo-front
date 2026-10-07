@@ -262,3 +262,19 @@ export interface CheckoutPayload {
   itens: ItemCheckoutPayload[];
   metodoPagamento: TipoPagamento;
 }
+
+/** Indicador agregado de vendas retornado por GET /api/negocio/top_produtos/{quant}. */
+export interface TopProduto {
+  id: number;
+  nome: string;
+  quantidade: number;
+  valorVendido: number;
+  percentual: number;
+}
+
+/** Receita agregada por mês retornada por GET /api/negocio/vendas_mensais. */
+export interface VendaMensal {
+  ano: number;
+  mes: number;
+  valorVendido: number;
+}

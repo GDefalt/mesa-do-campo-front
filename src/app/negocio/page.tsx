@@ -6,7 +6,6 @@ import styles from "./page.module.css";
 import MeusProdutos from "../../components/negocio/MeusProdutos";
 import ProdutosVendidos from "../../components/negocio/PedidosRecebidos";
 import RelatorioVendas from "../../components/negocio/RelatorioVendas";
-import Lucro from "../../components/negocio/Lucro";
 import { getVendedorAutenticado, ApiError } from "@integracao-backend";
 import { useClienteAutenticado } from "../../hooks/useClienteAutenticado";
 
@@ -52,26 +51,22 @@ export default function MeuNegocio() {
   return (
     <div className={styles.body}>
       <div className={styles.topo}>
+        <span className={styles.sobreTitulo}>PAINEL DO VENDEDOR</span>
         <h1>Meu Negócio</h1>
-        <p className={styles.subtitulo}>Gerencie seus produtos e acompanhe o desempenho das vendas.</p>
-        <div className={styles.linha}></div>
+        <p className={styles.subtitulo}>Organize seu catálogo, acompanhe os pedidos e tome decisões com os dados das suas vendas.</p>
       </div>
 
       <div className={styles.container}>
-        <section className={styles.secao}>
+        <section className={`${styles.secao} ${styles.secaoProdutos}`}>
           <MeusProdutos idVendedor={idVendedor} />
         </section>
 
-        <section className={styles.secao}>
+        <section className={`${styles.secao} ${styles.secaoPedidos}`}>
           <ProdutosVendidos idVendedor={idVendedor} />
         </section>
 
-        <section className={styles.secao}>
+        <section className={`${styles.secao} ${styles.secaoRelatorio}`}>
           <RelatorioVendas idVendedor={idVendedor} />
-        </section>
-
-        <section className={styles.secao}>
-          <Lucro idVendedor={idVendedor} />
         </section>
       </div>
     </div>
