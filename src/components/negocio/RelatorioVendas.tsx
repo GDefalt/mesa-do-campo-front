@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./RelatorioVendas.module.css";
 import RankingPizza from "./RankingPizza";
 import GraficoMensal from "./GraficoMensal";
-import { useItensVendidos } from "../../hooks/useItensVendidos";
+import { listarProdutosPorVendedor, listarTopProdutos, listarVendasMensais, Produto, TopProduto, VendaMensal } from "@integracao-backend";
 import { formatarPreco } from "../../lib/formatarPreco";
 
 interface Props {
@@ -31,13 +31,6 @@ const MESES = [
 ];
 
 const MAX_MESES_INTERVALO = 36;
-
-function chaveDoMes(dataIso?: string): string | null {
-  if (!dataIso) return null;
-  const data = new Date(dataIso);
-  if (isNaN(data.getTime())) return null;
-  return `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, "0")}`;
-}
 
 function rotuloDoMes(chave: string): string {
   const [ano, mes] = chave.split("-").map(Number);
@@ -70,63 +63,158 @@ const anoAtual = hoje.getFullYear();
 const chaveMesAtual = `${anoAtual}-${String(hoje.getMonth() + 1).padStart(2, "0")}`;
 
 export default function RelatorioVendas({ idVendedor }: Props) {
-  const { itens, produtos, carregando, erro } = useItensVendidos(idVendedor);
   const [gerando, setGerando] = useState(false);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState<string | null>(null);
 
+  const [topProdutosApi, setTopProdutosApi] = useState<TopProduto[]>([]);
+  const [vendasMensaisApi, setVendasMensaisApi] = useState<VendaMensal[]>([]);
+  const [meusProdutos, setMeusProdutos] = useState<Produto[]>([]);
+
+  // Por padrão, inicializa sempre com o ano atual
   const [mesInicio, setMesInicio] = useState(`${anoAtual}-01`);
   const [mesFim, setMesFim] = useState(`${anoAtual}-12`);
 
   const intervaloInvalido = mesInicio > mesFim;
 
-  const itensValidos = useMemo(() => itens.filter((item) => item.status !== "CANCELADO"), [itens]);
+  // Busca os dados do back-end conforme o período selecionado
+  useEffect(() => {
+    if (intervaloInvalido) return;
 
-  // Só considera, nos gráficos e no ranking, os itens dentro do período selecionado.
-  const itensNoPeriodo = useMemo(() => {
-    if (intervaloInvalido) return [];
-    return itensValidos.filter((item) => {
-      const chave = chaveDoMes(item.dataCompra);
-      return chave != null && chave >= mesInicio && chave <= mesFim;
-    });
-  }, [itensValidos, mesInicio, mesFim, intervaloInvalido]);
+    let cancelado = false;
+    setCarregando(true);
+    setErro(null);
 
-  const receitaTotal = useMemo(
-    () => itensValidos.reduce((soma, item) => soma + item.precoUnit * item.quantidade, 0),
-    [itensValidos]
-  );
+    // Calcula as datas em YYYY-MM-DD para o back-end
+    const [anoF, mesF] = mesFim.split("-").map(Number);
+    const ultimoDia = new Date(anoF, mesF, 0).getDate();
+    const dataInicio = `${mesInicio}-01`;
+    const dataFim = `${mesFim}-${String(ultimoDia).padStart(2, "0")}`;
 
-  const unidadesTotais = useMemo(
-    () => itensValidos.reduce((soma, item) => soma + item.quantidade, 0),
-    [itensValidos]
-  );
+    Promise.all([
+      listarTopProdutos(5),
+      listarVendasMensais(dataInicio, dataFim),
+      listarProdutosPorVendedor(idVendedor),
+    ])
+      .then(([topRes, mensaisRes, produtosRes]) => {
+        if (!cancelado) {
+          console.log("Top produtos recebidos:", topRes);
+          console.log("Vendas mensais recebidas:", mensaisRes);
+          console.log("Produtos do vendedor recebidos:", produtosRes);
 
-  // Top 5 produtos mais vendidos (por unidades), dentro do período selecionado.
-  const top5 = useMemo(() => {
-    const mapa: Record<number, LinhaProduto> = {};
+          setTopProdutosApi(topRes || []);
+          setVendasMensaisApi(mensaisRes || []);
+          setMeusProdutos(produtosRes || []);
+        }
+      })
+      .catch((err) => {
+        if (!cancelado) {
+          console.error("Erro ao carregar dados do relatório:", err);
+          setErro(err?.message || "Erro ao carregar dados do relatório.");
+        }
+      })
+      .finally(() => {
+        if (!cancelado) {
+          setCarregando(false);
+        }
+      });
 
-    itensNoPeriodo.forEach((item) => {
-      const nome = produtos[item.idProduto]?.nome ?? `Produto #${item.idProduto}`;
-      if (!mapa[item.idProduto]) mapa[item.idProduto] = { nome, quantidade: 0, receita: 0 };
-      mapa[item.idProduto].quantidade += item.quantidade;
-      mapa[item.idProduto].receita += item.precoUnit * item.quantidade;
-    });
+    return () => {
+      cancelado = true;
+    };
+  }, [idVendedor, mesInicio, mesFim, intervaloInvalido]);
 
-    return Object.values(mapa)
-      .sort((a, b) => b.quantidade - a.quantidade)
-      .slice(0, 5);
-  }, [itensNoPeriodo, produtos]);
+  // Mapeia o Top 5 retornado do back-end, ignorando o objeto de "TOTAL"
+  const top5: LinhaProduto[] = useMemo(() => {
+    const produtosReais = topProdutosApi.filter(
+      (item) => item.id !== 0 && item.nome !== "TOTAL" && item.nome !== "Total"
+    );
 
-  // Renda mensal: TODOS os meses do período aparecem, mesmo sem vendas.
+    return produtosReais.slice(0, 5).map((item) => ({
+      nome: item.nome ?? "",
+      quantidade: Number(item.quantidade ?? (item as any).quant_vendida ?? 0),
+      receita: Number(item.valorVendido ?? (item as any).valor_vendido ?? (item as any).receita ?? 0),
+    }));
+  }, [topProdutosApi]);
+
+  // Localiza o objeto de TOTAL na última linha de topProdutosApi (id: 0 ou nome: 'TOTAL')
+  const linhaTotalGeral = useMemo(() => {
+    if (topProdutosApi.length === 0) return null;
+    return (
+      topProdutosApi.find(
+        (item) => item.id === 0 || item.nome === "TOTAL" || item.nome === "Total"
+      ) ?? topProdutosApi[topProdutosApi.length - 1]
+    );
+  }, [topProdutosApi]);
+
+  // Extrai a receita total diretamente da linha TOTAL
+  const receitaTotal = useMemo(() => {
+    if (!linhaTotalGeral) return 0;
+    return Number(
+      linhaTotalGeral.valorVendido ??
+        (linhaTotalGeral as any).valor_vendido ??
+        (linhaTotalGeral as any).receita ??
+        0
+    );
+  }, [linhaTotalGeral]);
+
+  // Extrai o total de unidades diretamente da linha TOTAL
+  const unidadesTotais = useMemo(() => {
+    if (!linhaTotalGeral) return 0;
+    return Number(
+      linhaTotalGeral.quantidade ??
+        (linhaTotalGeral as any).quant_vendida ??
+        0
+    );
+  }, [linhaTotalGeral]);
+
+  // Calcula os dados para o gráfico de pizza incluindo a fatia "Outros"
+  const dadosPizza = useMemo(() => {
+    const baseDados = top5.map((p) => ({ nome: p.nome, valor: p.quantidade }));
+
+    if (linhaTotalGeral) {
+      const totalGeral = Number(
+        linhaTotalGeral.quantidade ?? (linhaTotalGeral as any).quant_vendida ?? 0
+      );
+      const totalTop5 = top5.reduce((soma, p) => soma + p.quantidade, 0);
+      const quantidadeOutros = totalGeral - totalTop5;
+
+      if (quantidadeOutros > 0) {
+        baseDados.push({ nome: "Outros", valor: quantidadeOutros });
+      }
+    }
+
+    return baseDados;
+  }, [top5, linhaTotalGeral]);
+
+  // Mapeia a renda mensal garantindo a exibição dos meses do intervalo
   const rendaMensal: LinhaMes[] = useMemo(() => {
     if (intervaloInvalido) return [];
 
     const mapa: Record<string, { quantidade: number; receita: number }> = {};
 
-    itensNoPeriodo.forEach((item) => {
-      const chave = chaveDoMes(item.dataCompra);
-      if (!chave) return;
-      if (!mapa[chave]) mapa[chave] = { quantidade: 0, receita: 0 };
-      mapa[chave].quantidade += item.quantidade;
-      mapa[chave].receita += item.precoUnit * item.quantidade;
+    vendasMensaisApi.forEach((item) => {
+      let chave: string | null = null;
+
+      if (item.ano && item.mes) {
+        const m = String(item.mes).padStart(2, "0");
+        chave = `${item.ano}-${m}`;
+      } else if ((item as any).chave) {
+        chave = String((item as any).chave).substring(0, 7);
+      } else if ((item as any).mes && typeof (item as any).mes === "string") {
+        chave = (item as any).mes.substring(0, 7);
+      }
+
+      if (!chave || chave.length < 7) return;
+
+      const qtd = (item as any).quantidade ?? (item as any).quant_vendida ?? 0;
+      const rec = item.valorVendido ?? (item as any).valor_vendido ?? (item as any).receita ?? 0;
+
+      if (!mapa[chave]) {
+        mapa[chave] = { quantidade: 0, receita: 0 };
+      }
+      mapa[chave].quantidade += Number(qtd);
+      mapa[chave].receita += Number(rec);
     });
 
     return gerarIntervaloMeses(mesInicio, mesFim).map((chave) => ({
@@ -136,7 +224,9 @@ export default function RelatorioVendas({ idVendedor }: Props) {
       receita: mapa[chave]?.receita ?? 0,
       atual: chave === chaveMesAtual,
     }));
-  }, [itensNoPeriodo, mesInicio, mesFim, intervaloInvalido]);
+  }, [vendasMensaisApi, mesInicio, mesFim, intervaloInvalido]);
+
+  const semVendas = top5.length === 0 && receitaTotal === 0;
 
   function gerarRelatorio() {
     setGerando(true);
@@ -145,13 +235,23 @@ export default function RelatorioVendas({ idVendedor }: Props) {
       ["Relatório de vendas — Mesa do Campo"],
       [`Período: ${mesInicio} a ${mesFim}`],
       [],
-      ["Top 5 produtos", "Quantidade vendida", "Receita"],
+      ["Top 5 produtos mais vendidos", "Quantidade vendida", "Receita"],
       ...top5.map((p) => [p.nome, String(p.quantidade), p.receita.toFixed(2)]),
       [],
       ["Renda mensal", "Unidades", "Receita"],
       ...rendaMensal.map((m) => [m.rotulo, String(m.quantidade), m.receita.toFixed(2)]),
       [],
       ["Renda total (todo o histórico)", String(unidadesTotais), receitaTotal.toFixed(2)],
+      [],
+      ["Catálogo de Produtos do Vendedor"],
+      ["ID", "Nome do Produto", "Preço Unitário (R$)", "Estoque Atual", "Categoria"],
+      ...meusProdutos.map((prod) => [
+        String(prod.id),
+        prod.nome,
+        prod.preco ? prod.preco.toFixed(2) : "0.00",
+        String(prod.quantidade ?? 0),
+        prod.categoria ?? "",
+      ]),
     ];
 
     const csv = linhas.map((linha) => linha.join(";")).join("\n");
@@ -180,7 +280,7 @@ export default function RelatorioVendas({ idVendedor }: Props) {
         <button
           className={styles.btnGerar}
           onClick={gerarRelatorio}
-          disabled={gerando || itensValidos.length === 0}
+          disabled={gerando || semVendas}
         >
           {gerando ? "Gerando..." : "Gerar Relatório"}
         </button>
@@ -190,11 +290,11 @@ export default function RelatorioVendas({ idVendedor }: Props) {
         <p className={styles.subtitulo}>Carregando vendas...</p>
       ) : erro ? (
         <p className={styles.subtitulo}>{erro}</p>
-      ) : itensValidos.length === 0 ? (
+      ) : semVendas ? (
         <p className={styles.subtitulo}>Você ainda não vendeu nenhum produto.</p>
       ) : (
         <>
-          {/* Renda total do negócio (sempre considera todo o histórico) */}
+          {/* Renda total do negócio (obtida diretamente do objeto TOTAL de TopProdutos) */}
           <div className={styles.rendaTotalBloco}>
             <div>
               <span className={styles.rendaTotalLabel}>Renda total do negócio</span>
@@ -247,14 +347,12 @@ export default function RelatorioVendas({ idVendedor }: Props) {
                       ))}
                     </div>
 
-                    <RankingPizza
-                      dados={top5.map((p) => ({ nome: p.nome, valor: p.quantidade }))}
-                    />
+                    <RankingPizza dados={dadosPizza} />
                   </div>
                 )}
               </div>
 
-              {/* Renda mensal — todos os meses do período, com o mês atual em destaque */}
+              {/* Renda mensal */}
               <div className={styles.blocoSecao}>
                 <h3 className={styles.tituloBloco}>Renda mensal</h3>
                 <GraficoMensal meses={rendaMensal} />
