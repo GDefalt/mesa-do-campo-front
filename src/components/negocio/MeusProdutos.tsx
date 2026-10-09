@@ -271,7 +271,7 @@ export default function MeusProdutos({ idVendedor }: Props) {
             <span>Produto</span>
             <span>Preço</span>
             <span>Estoque</span>
-            <span></span>
+            <span>Edição</span>
           </div>
 
           {produtos.map((produto) => (

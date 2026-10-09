@@ -1,4 +1,4 @@
-  .body_register {
+.body_register {
     min-height: 100vh;
     background-image:
       linear-gradient(160deg, rgba(30, 90, 33, 0.82) 0%, rgba(47, 125, 50, 0.55) 55%, rgba(248, 244, 233, 0.65) 100%),
@@ -106,6 +106,37 @@
     font-size: 0.85rem;
     margin: -8px 0 18px;
     text-align: left;
+  }
+
+  .sucesso {
+    color: var(--color-primary-dark);
+    background: #EAF6EC;
+    border: 1px solid #BFE3C4;
+    border-radius: 10px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.85rem;
+    margin: -8px 0 18px;
+    text-align: left;
+  }
+
+  .esqueciSenhaWrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin: -12px 0 18px;
+  }
+
+  .esqueciSenha {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+  }
+
+  .esqueciSenha:hover {
+    color: var(--color-primary);
   }
 
   .register {

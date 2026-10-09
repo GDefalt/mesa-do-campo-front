@@ -189,6 +189,13 @@ export async function apiGetOne<T>(path: string, autenticado = true): Promise<T>
   return resultado.itens[0];
 }
 
+export async function apiGetNoContent(path: string, autenticado = true): Promise<void> {
+  await request<void>(path, {
+    method: "GET",
+    autenticado
+  });
+}
+
 export async function apiPost<T>(path: string, body: unknown, autenticado = true): Promise<T> {
   const resultado = await request<T>(path, { method: "POST", body, autenticado });
   return resultado.itens![0];

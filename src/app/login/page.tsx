@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "../login/page.module.css";
-import { loginCliente, salvarCredenciais, ApiError } from "@integracao-backend";
+import { resetPassword, loginCliente, salvarCredenciais, ApiError } from "@integracao-backend";
 
 export default function Login() {
   const router = useRouter();
@@ -12,18 +12,19 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
+  const [sucesso, setSucesso] = useState("");
   const [carregando, setCarregando] = useState(false);
+  const [recuperando, setRecuperando] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
+    setSucesso("");
     setCarregando(true);
 
     try {
       const cliente = await loginCliente({ email, senha });
 
-      // O back-end autentica as próximas requisições via Basic Auth usando
-      // nome:senha (ver integracao-backend/authStorage.ts para detalhes).
       salvarCredenciais({ nome: cliente.nome, senha });
 
       router.push("/");
@@ -32,6 +33,27 @@ export default function Login() {
       setErro(mensagem);
     } finally {
       setCarregando(false);
+    }
+  }
+
+  async function handleResetPassword() {
+    setErro("");
+    setSucesso("");
+
+    if (!email) {
+      setErro("Por favor, digite seu e-mail no campo acima para recuperar a senha.");
+      return;
+    }
+
+    setRecuperando(true);
+    try {
+      await resetPassword(email);
+      setSucesso("Instruções de recuperação enviadas para o seu e-mail!");
+    } catch (err) {
+      const mensagem = err instanceof ApiError ? err.message : "Não foi possível enviar a recuperação de senha. Tente novamente.";
+      setErro(mensagem);
+    } finally {
+      setRecuperando(false);
     }
   }
 
@@ -64,7 +86,17 @@ export default function Login() {
               required
             />
 
+            <div className={styles.esqueciSenhaWrapper}>
+              <span
+                className={styles.esqueciSenha}
+                onClick={() => !recuperando && handleResetPassword()}
+              >
+                {recuperando ? "Enviando..." : "Esqueci a senha"}
+              </span>
+            </div>
+
             {erro && <p className={styles.erro}>{erro}</p>}
+            {sucesso && <p className={styles.sucesso}>{sucesso}</p>}
 
             <button type="submit" disabled={carregando}>
               {carregando ? "Entrando..." : "Entrar"}

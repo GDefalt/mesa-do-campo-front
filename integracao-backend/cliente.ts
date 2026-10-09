@@ -1,4 +1,4 @@
-import { apiGetOne, apiPost, apiPut, apiPatch, apiGetList, apiDelete } from "./client";
+import { apiGetNoContent, apiGetOne, apiPost, apiPut, apiPatch, apiGetList, apiDelete } from "./client";
 import { CadastroClienteResultado, ClienteDTO, ClienteCreate, LoginPayload } from "./types";
 
 /** POST /api/cliente/create — cria uma conta ou reativa uma conta desativada com o mesmo e-mail e CPF/CNPJ. */
@@ -9,6 +9,13 @@ export function cadastrarCliente(dados: ClienteCreate): Promise<CadastroClienteR
 /** POST /api/cliente/login — login por e-mail e senha (não exige autenticação) */
 export function loginCliente(dados: LoginPayload): Promise<ClienteDTO> {
   return apiPost<ClienteDTO>("/cliente/login", dados, false);
+}
+
+export async function resetPassword(email: string) {
+  await apiGetNoContent(
+    `/cliente/reset/password/${encodeURIComponent(email)}`,
+    false
+  );
 }
 
 /** GET /api/cliente/auto — dados do cliente autenticado */
